@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Buff.h"
+#include "LoadModels.h"
 
 CBuff gBuff;
 
@@ -18,6 +19,35 @@ void CBuff::Init()
 	SetCompleteHook(0xE9, 0x0043BDE0, &this->InsertBuffPhysicalEffect);
 
 	SetCompleteHook(0xE9, 0x0043C070, &this->ClearBuffPhysicalEffect);
+
+	SetCompleteHook(0xE8, 0x0046B7A0, &this->MoveEffectHook);
+}
+
+INT16 CBuff::MoveEffectHook(WORD* o, int objectNumber)
+{
+
+	if (*((WORD*)o + 1) == GM_BALLOON_MODEL)
+	{
+
+		float Position[3], Angle[3], Light[3];
+
+		DWORD owner = *((DWORD*)o + 63);
+		DeleteEffect(GM_BALLOON_MODEL, owner, 0);
+
+		VectorCopy((float*)(owner + 16), Position);
+
+		VectorCopy((float*)(owner + 28), Angle);
+
+		Vector(5.0f, 5.0f, 5.0f, Light);
+		Position[2] += 220;
+
+		CreateEffect(GM_BALLOON_MODEL, Position, Angle, Light, 1, owner, -1, 0, 0);
+	}
+
+	INT16 result = MoveEffect(o, objectNumber);
+
+	return result;
+
 }
 
 void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)

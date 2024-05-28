@@ -24,6 +24,17 @@ void CLoadModels::Init()
 	SetCompleteHook(0xE8, 0x0045A038, &this->PartObjectColorHook);
 
 	SetCompleteHook(0xE8, 0x00504A02, &this->PartObjectColorHook);
+
+	SetCompleteHook(0xE8, 0x00510DE5, &this->LoadSkillsHook);
+}
+
+void CLoadModels::LoadSkillsHook()
+{
+	LoadSkills();
+
+	// load gm balloon
+	gLoadModels.LoadModel(GM_BALLOON_MODEL, SKILLS_FOLDER, GM_BALLOON_MODEL_NAME, GM_BALLOON_MODEL_NUMBER);
+	gLoadModels.LoadTexture(GM_BALLOON_MODEL, SKILLS_FOLDER, GM_BALLOON_MODEL_NAME);
 }
 
 void CLoadModels::SetTexturesOffset()

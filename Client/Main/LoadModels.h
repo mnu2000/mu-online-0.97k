@@ -10,6 +10,13 @@
 
 #define MAX_TEXTURE 12000
 
+#define GM_BALLOON_MODEL 193
+#define GM_BALLOON_MODEL_NAME "Musign"
+#define GM_BALLOON_MODEL_NUMBER 1
+
+#define SKILLS_FOLDER "Skill\\"
+
+
 struct TEXTURE_INFO
 {
 	char Name[32];
@@ -42,6 +49,8 @@ private:
 	void LoadTexture(int index, char* folder, char* name);
 
 	static void PartObjectColorHook(int Type, float Alpha, float Bright, float Light[3], bool ExtraMon);
+	static void LoadSkillsHook();
+
 
 private:
 
