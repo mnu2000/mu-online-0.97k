@@ -704,7 +704,12 @@ void CViewport::GCViewportPlayerSend(int aIndex)
 		info.tx = (BYTE)lpTarget->TX;
 
 		info.ty = (BYTE)lpTarget->TY;
-
+		
+		if (lpTarget->Authority == 32)
+		{
+			gEffectManager.AddEffect(lpTarget, 0, EFFECT_GM_BALLON, 0, 0, 0, 0, 0);
+		}
+		
 		info.DirAndPkLevel = (lpTarget->Dir * 16) | (lpTarget->PKLevel & 0x0F);
 
 		int InfoSize = sizeof(info);
@@ -1291,6 +1296,11 @@ void CViewport::GCViewportSimplePlayerSend(LPOBJ lpObj)
 	info.tx = (BYTE)lpObj->TX;
 
 	info.ty = (BYTE)lpObj->TY;
+
+	if (gEffectManager.CheckEffect(lpObj, EFFECT_GM_BALLON) == 1)
+	{
+		gEffectManager.AddEffect(lpObj, 0, EFFECT_GM_BALLON, 0, 0, 0, 0, 0);
+	}
 
 	info.DirAndPkLevel = (lpObj->Dir * 16) | (lpObj->PKLevel & 0x0F);
 

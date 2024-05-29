@@ -745,6 +745,11 @@ WORD CEffectManager::GetViewSkillState(BYTE effect)
 		{
 			return STATE_REDUCE_MAGICPOWER;
 		}
+
+		case EFFECT_GM_BALLON:
+		{
+			return STATE_GM_BALLON;
+		}
 	}
 
 	return 0;

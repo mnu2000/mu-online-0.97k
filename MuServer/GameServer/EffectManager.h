@@ -23,6 +23,7 @@ enum eEffectNumber
 	EFFECT_FIRE_SLASH = 58,
 	EFFECT_MONSTER_PHYSI_DAMAGE_IMMUNITY = 63,
 	EFFECT_MONSTER_MAGIC_DAMAGE_IMMUNITY = 64,
+	EFFECT_GM_BALLON = 65,
 };
 
 enum eEffectState
@@ -37,6 +38,7 @@ enum eEffectState
 	STATE_REDUCE_ATTACKDAMAGE = 0x0080, // Attack reduction (Mage)
 	STATE_REDUCE_MAGICDEFENSE = 0x0100, // Increase defense (Mage)
 	STATE_REDUCE_MAGICPOWER = 0x0200, // Decrease magic ability (monster skill)
+	STATE_GM_BALLON = 0x0400, // Show GM balloon above GM player
 };
 
 //**********************************************//

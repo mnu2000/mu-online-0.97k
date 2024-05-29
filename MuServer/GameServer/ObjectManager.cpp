@@ -346,6 +346,11 @@ void CObjectManager::ObjectSetStateProc()
 			gObjViewportListProtocolCreate(lpObj);
 
 			this->CharacterUpdateMapEffect(lpObj);
+
+			if (lpObj->Authority == 32)
+			{
+				gEffectManager.AddEffect(lpObj, 0, EFFECT_GM_BALLON, 0, 0, 0, 0, 0);
+			}
 		}
 	}
 
@@ -2890,6 +2895,11 @@ bool CObjectManager::CharacterInfoSet(BYTE* aRecv, int aIndex)
 		lpObj->Authority = 32;
 
 		gGameMaster.SetGameMasterLevel(lpObj, 2);
+	}
+
+	if (lpObj->Authority == 32)
+	{
+		gEffectManager.AddEffect(lpObj, 0, EFFECT_GM_BALLON, 0, 0, 0, 0, 0);
 	}
 
 	lpObj->Penalty = 0;

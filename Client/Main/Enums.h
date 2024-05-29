@@ -37,6 +37,7 @@ enum eEffectState
 	STATE_REDUCE_ATTACKDAMAGE = 0x0080, // Attack reduction (Mage)
 	STATE_REDUCE_MAGICDEFENSE = 0x0100, // Increase defense (Mage)
 	STATE_REDUCE_MAGICPOWER = 0x0200, // Decrease magic ability (monster skill)
+	STATE_GM_BALLOON = 0x0400, // Show GM balloon above GM player
 };
 
 /* ITEM OPTIONS */
