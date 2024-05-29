@@ -198,7 +198,11 @@ void CMiniMap::RenderObjects()
 
 		if (*(BYTE*)(ViewportAddress + 0x84) == 1)
 		{
-			glColor3f(0.8f, 0.0f, 0.0f);
+			if (FindEffect(*(DWORD*)(ViewportAddress + 120), STATE_GM_BALLOON) != 0)
+				glColor3f(0.0f, 1.0f, 0.0f);
+			else
+				glColor3f(0.8f, 0.0f, 0.0f);
+
 		}
 		else if (*(BYTE*)(ViewportAddress + 0x84) == 2)
 		{
