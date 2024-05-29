@@ -32,8 +32,7 @@ INT16 CBuff::MoveEffectHook(WORD* o, int objectNumber)
 		float Position[3], Angle[3], Light[3];
 
 		DWORD owner = *((DWORD*)o + 63);
-		DeleteEffect(GM_BALLOON_MODEL, owner, 0);
-		CreateGmBalloonEffect(owner);
+		UpdateGmBalloonEffect(owner);
 	}
 
 	INT16 result = MoveEffect(o, objectNumber);
@@ -42,9 +41,9 @@ INT16 CBuff::MoveEffectHook(WORD* o, int objectNumber)
 
 }
 
-void CBuff::CreateGmBalloonEffect(DWORD owner) 
+void CBuff::UpdateGmBalloonEffect(DWORD owner) 
 {
-	if (*(DWORD*)owner)
+	if (*((WORD*)owner) && FindEffect(*(DWORD*)(owner + 120), STATE_GM_BALLOON) != 0)
 	{
 		float Position[3], Angle[3], Light[3];
 
@@ -57,6 +56,10 @@ void CBuff::CreateGmBalloonEffect(DWORD owner)
 
 		CreateEffect(GM_BALLOON_MODEL, Position, Angle, Light, 1, owner, -1, 0, 0);
 	}
+	else
+	{
+		DeleteEffect(GM_BALLOON_MODEL, owner, 1);
+	}
 }
 
 void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
@@ -68,7 +71,8 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 	if (FindEffect(buff, STATE_GM_BALLOON) != 0)
 	{
-		CreateGmBalloonEffect(o);
+		AddBuff(*(DWORD*)(o + 120), STATE_GM_BALLOON);
+		UpdateGmBalloonEffect(o);
 	}
 
 	if (FindEffect(buff, STATE_POISON) != 0)
