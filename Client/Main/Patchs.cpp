@@ -5,7 +5,7 @@
 
 void InitPatchs()
 {
-	SetByte(0x00558EA8, 0xA0); // Accent
+	SetByte(0x00558EA8, 0xB1); // Accent
 
 	SetByte(0x00406F36, 0xEB); // Crack return
 
