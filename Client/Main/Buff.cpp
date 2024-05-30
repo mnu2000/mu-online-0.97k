@@ -31,28 +31,37 @@ INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber)
 		DWORD owner = *((DWORD*)o + 63);
 		if (*((WORD*)owner) && FindEffect(*(DWORD*)(owner + 120), STATE_GM_BALLOON) != 0)
 		{
-			float Position[3];
-
-			VectorCopy((float*)(owner + 16), Position);
-			Position[2] += 220;
+			
+			float* Position = CalculateGMBalloonPosition(owner);
 
 			VectorCopy(Position, (float*)(o + 16));
 			VectorCopy((float*)(owner + 28), (float*)(o + 28));
 
 			*(int*)(o + 96) = 100;
+			
 		}
 		else
-		{
 			*((WORD*)o) = 0;
-		}
-
-
 	}
 
 	INT16 result = MoveEffect(o, objectNumber);
 
 	return result;
 
+}
+
+float* CBuff::CalculateGMBalloonPosition(DWORD owner)
+{
+	float Position[3], relativePosition[3]{ 70,-5,0 };
+
+	DWORD gmSignModel = GetBMDModel(GM_BALLOON_MODEL);
+	VectorCopy((float*)(owner + 16), (float*)(gmSignModel + 108));
+
+	vec34_t* boneTransform = (vec34_t*)(*(DWORD*)(owner + 276));
+
+	TransformPosition(gmSignModel, &boneTransform[20], relativePosition, Position, true);
+
+	return Position;
 }
 
 void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
@@ -69,11 +78,11 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 		DeleteEffect(GM_BALLOON_MODEL, o, 1);
 
 		VectorCopy((float*)(o + 16), Position);
+		Position[2] += 220;
 
 		VectorCopy((float*)(o + 28), Angle);
 
 		Vector(5.0f, 5.0f, 5.0f, Light);
-		Position[2] += 220;
 
 		CreateEffect(GM_BALLOON_MODEL, Position, Angle, Light, 1, o, -1, 0, 0);
 
@@ -210,6 +219,7 @@ void CBuff::ClearBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 	if (FindEffect(buff, STATE_GM_BALLOON) != 0)
 	{
+		DelBuff(*(DWORD*)(o + 120), STATE_GM_BALLOON);
 		DeleteEffect(GM_BALLOON_MODEL, o, 0);
 	}
 

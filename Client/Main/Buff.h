@@ -17,6 +17,7 @@ private:
 	static void ClearBuffPhysicalEffect(eEffectState buff, DWORD o);
 
 	static INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber);
+	static float* CBuff::CalculateGMBalloonPosition(DWORD owner);
 
 };
 

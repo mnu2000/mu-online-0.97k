@@ -120,5 +120,8 @@
 #define g_lpDSBuffer (&*(LPDIRECTSOUNDBUFFER*)0x0058C780) // LPDIRECTSOUNDBUFFER g_lpDSBuffer[420][4]
 
 // Models
+#define BMDModels *(DWORD*)0x05828D58
+#define GetBMDModel(model_number) (BMDModels + 188 * model_number)
 #define ItemAttribute *(DWORD*)0x07D78068
 #define LoadSkills ((void(*)()) 0x0050B710)
+#define TransformPosition ((float(__thiscall*)(DWORD model, vec34_t* BonePosition, float* RelativePostion, float* Position, bool Translate))0x004409A0)
