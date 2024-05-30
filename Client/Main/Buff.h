@@ -16,9 +16,8 @@ private:
 
 	static void ClearBuffPhysicalEffect(eEffectState buff, DWORD o);
 
-	static INT16 CBuff::MoveEffectHook(WORD* o, int objectNumber);
+	static INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber);
 
-	static void CBuff::UpdateGmBalloonEffect(DWORD o);
 };
 
 extern CBuff gBuff;

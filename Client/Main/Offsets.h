@@ -58,7 +58,7 @@
 #define DeleteEffect ((void(__cdecl*)(int Type, DWORD Owner, int iSubType)) 0x00460D20)
 #define CreateJoint ((void(_cdecl*)(int Type, float* Position, float* TargetPosition, float* Angle, int SubType, DWORD Target, float Scale, short PKKey, WORD SkillIndex)) 0x0046D840)
 #define DeleteJoint ((void(__cdecl*)(int Type, DWORD Target, int SubType)) 0x0046FE00)
-#define MoveEffect ((INT16(*)(WORD*, int)) 0x00466AD0)
+#define MoveEffect ((INT16(*)(DWORD, int)) 0x00466AD0)
 
 // Font
 #define FontHeight *(int*)0x07D78080
