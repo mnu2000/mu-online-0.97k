@@ -21,11 +21,31 @@ void CBuff::Init()
 	SetCompleteHook(0xE9, 0x0043C070, &this->ClearBuffPhysicalEffect);
 
 	SetCompleteHook(0xE8, 0x0046B7A0, &this->MoveEffectHook);
+	SetCompleteHook(0xE8, 0x004FC058, &this->DrawObjectHook);
+}
+
+void CBuff::DrawObjectHook(DWORD o, bool Translate, int Select, int ExtraMon)
+{
+	if (*((WORD*)o + 1) == GM_BALLOON_MODEL)
+	{
+		DWORD gmSignModel = GetBMDModel(GM_BALLOON_MODEL);
+
+		// render texture
+		Vector(1.f, 1.f, 1.f, (float*)(gmSignModel + 72));
+		RenderBody(gmSignModel,0x02,*(GLfloat*)(o + 360),*(DWORD*)(o + 100),*(DWORD*)(o + 104),*(DWORD*)(o + 108),*(DWORD*)(o + 112),*(DWORD*)(o + 88),-1);
+
+		// render chrome and glow effect
+		Vector(1.f, 0.5f, 0.f, (float*)(gmSignModel + 72));
+		RenderBody(gmSignModel,0x40|0x04,*(GLfloat*)(o + 360),*(DWORD*)(o + 100),*(DWORD*)(o + 104),*(DWORD*)(o + 108),*(DWORD*)(o + 112),*(DWORD*)(o + 88),-1);
+
+		return;
+	}
+
+	DrawObject(o, Translate, Select, ExtraMon);
 }
 
 INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber)
 {
-
 	if (*((WORD*)o) && *((WORD*)o + 1) == GM_BALLOON_MODEL)
 	{
 		DWORD owner = *((DWORD*)o + 63);
@@ -86,7 +106,7 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 		VectorCopy((float*)(o + 28), Angle);
 
-		Vector(5.0f, 5.0f, 5.0f, Light);
+		Vector(1.0f, 1.0f, 1.0f, Light);
 
 		CreateEffect(GM_BALLOON_MODEL, BalloonPosition, Angle, Light, 1, o, -1, 0, 0);
 

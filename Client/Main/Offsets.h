@@ -59,6 +59,8 @@
 #define CreateJoint ((void(_cdecl*)(int Type, float* Position, float* TargetPosition, float* Angle, int SubType, DWORD Target, float Scale, short PKKey, WORD SkillIndex)) 0x0046D840)
 #define DeleteJoint ((void(__cdecl*)(int Type, DWORD Target, int SubType)) 0x0046FE00)
 #define MoveEffect ((INT16(*)(DWORD, int)) 0x00466AD0)
+#define DrawObject ((void(__cdecl*)(DWORD o, bool Translate, int Select, int ExtraMon)) 0x004FAE00)
+
 
 // Font
 #define FontHeight *(int*)0x07D78080
@@ -124,4 +126,7 @@
 #define GetBMDModel(model_number) (BMDModels + 188 * model_number)
 #define ItemAttribute *(DWORD*)0x07D78068
 #define LoadSkills ((void(*)()) 0x0050B710)
+
+//BMD Functions
 #define TransformPosition ((float(__thiscall*)(DWORD model, vec34_t* BonePosition, float* RelativePostion, float* Position, bool Translate))0x004409A0)
+#define RenderBody ((void(__thiscall*)(DWORD model, int Flag, float Alpha, int BlendMesh, float BlendMeshLight, float BlendMeshTexCoordU, float BlendMeshTexCoordV, int HiddenMesh, int Texture))0x00441E00)
