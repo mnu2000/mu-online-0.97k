@@ -18,7 +18,7 @@ private:
 
 	static INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber);
 	static void DrawObjectHook(DWORD o, bool Translate, int Select, int ExtraMon);
-	static float* CBuff::CalculateGMBalloonPosition(DWORD owner);
+	static void CalculateGMBalloonPosition(DWORD owner, float* position);
 
 };
 
