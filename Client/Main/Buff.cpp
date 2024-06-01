@@ -28,15 +28,15 @@ void CBuff::DrawObjectHook(DWORD o, bool Translate, int Select, int ExtraMon)
 {
 	if (*((WORD*)o + 1) == GM_BALLOON_MODEL)
 	{
-		DWORD gmSignModel = GetBMDModel(GM_BALLOON_MODEL);
+		DWORD gmSignModel = GetBMDModel(*((WORD*)o + 1));
 
 		// render texture
 		Vector(1.f, 1.f, 1.f, (float*)(gmSignModel + 72));
-		RenderBody(gmSignModel,0x02,*(GLfloat*)(o + 360),*(DWORD*)(o + 100),*(DWORD*)(o + 104),*(DWORD*)(o + 108),*(DWORD*)(o + 112),*(DWORD*)(o + 88),-1);
+		RenderBody(gmSignModel,0x02,*(float*)(o + 360),*(int*)(o + 100),*(float*)(o + 104),*(float*)(o + 108),*(float*)(o + 112),*(int*)(o + 88),-1);
 
 		// render chrome and glow effect
 		Vector(1.f, 0.5f, 0.f, (float*)(gmSignModel + 72));
-		RenderBody(gmSignModel,0x40|0x04,*(GLfloat*)(o + 360),*(DWORD*)(o + 100),*(DWORD*)(o + 104),*(DWORD*)(o + 108),*(DWORD*)(o + 112),*(DWORD*)(o + 88),-1);
+		RenderBody(gmSignModel,0x40|0x04,*(float*)(o + 360),*(int*)(o + 100),*(float*)(o + 104),*(float*)(o + 108),*(float*)(o + 112),*(int*)(o + 88),-1);
 
 		return;
 	}
@@ -51,8 +51,8 @@ INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber)
 		DWORD owner = *((DWORD*)o + 63);
 		if (*((WORD*)owner) && FindEffect(*(DWORD*)(owner + 120), STATE_GM_BALLOON) != 0)
 		{
-			
-			float* Position = CalculateGMBalloonPosition(owner);
+			float Position[3];
+			CalculateGMBalloonPosition(owner, Position);
 
 			VectorCopy(Position, (float*)(o + 16));
 			VectorCopy((float*)(owner + 28), (float*)(o + 28));
@@ -70,23 +70,20 @@ INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber)
 
 }
 
-float* CBuff::CalculateGMBalloonPosition(DWORD owner)
+void CBuff::CalculateGMBalloonPosition(DWORD owner, float* position)
 {
-	float Position[3], relativePosition[3]{ 70,-5,0 };
+	float relativePosition[3]{ 70,-5,0 };
 
-	DWORD gmSignModel = GetBMDModel(GM_BALLOON_MODEL);
-	VectorCopy((float*)(owner + 16), (float*)(gmSignModel + 108));
-
+	DWORD ownerModel = GetBMDModel(*(DWORD*)(owner + 2));
 	vec34_t* boneTransform = (vec34_t*)(*(DWORD*)(owner + 276));
+
 	if (boneTransform != NULL)
-		TransformPosition(gmSignModel, &boneTransform[20], relativePosition, Position, true);
+		TransformPosition(ownerModel, &boneTransform[20], relativePosition, position, true);
 	else
 	{
-		VectorCopy((float*)(owner + 16), Position);
-		Position[2] += 220;
+		VectorCopy((float*)(owner + 16), position);
+		position[2] += 220;
 	}
-
-	return Position;
 }
 
 void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
@@ -102,13 +99,13 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 		DeleteEffect(GM_BALLOON_MODEL, o, 1);
 
-		float* BalloonPosition = CalculateGMBalloonPosition(o);
+		CalculateGMBalloonPosition(o, Position);
 
 		VectorCopy((float*)(o + 28), Angle);
 
 		Vector(1.0f, 1.0f, 1.0f, Light);
 
-		CreateEffect(GM_BALLOON_MODEL, BalloonPosition, Angle, Light, 1, o, -1, 0, 0);
+		CreateEffect(GM_BALLOON_MODEL, Position, Angle, Light, 1, o, -1, 0, 0);
 
 	}
 
