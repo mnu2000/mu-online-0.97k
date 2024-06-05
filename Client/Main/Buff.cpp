@@ -74,11 +74,13 @@ void CBuff::CalculateGMBalloonPosition(DWORD owner, float* position)
 {
 	float relativePosition[3]{ 70,-5,0 };
 
-	DWORD ownerModel = GetBMDModel(*(WORD*)(owner + 2));
+	DWORD gmSignModel = GetBMDModel(GM_BALLOON_MODEL);
+	VectorCopy((float*)(owner + 16), (float*)(gmSignModel + 108));
+
 	vec34_t* boneTransform = (vec34_t*)(*(DWORD*)(owner + 276));
 
 	if (boneTransform != NULL)
-		TransformPosition(ownerModel, &boneTransform[20], relativePosition, position, true);
+		TransformPosition(gmSignModel, &boneTransform[20], relativePosition, position, true);
 	else
 	{
 		VectorCopy((float*)(owner + 16), position);
