@@ -55,7 +55,13 @@ INT16 CBuff::MoveEffectHook(DWORD o, int objectNumber)
 			CalculateGMBalloonPosition(owner, Position);
 
 			VectorCopy(Position, (float*)(o + 16));
+
 			VectorCopy((float*)(owner + 28), (float*)(o + 28));
+
+			if (((float*)(o + 28))[2] < 45 - 90 || ((float*)(o + 28))[2] > 45 + 90)
+			{
+				((float*)(o + 28))[2] -= 180;
+			}
 
 			*(int*)(o + 96) = 100;
 			
